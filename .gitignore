@@ -1,0 +1,7 @@
+sim
+sim.out
+*.vcd
+*_check
+dac_check
+spi_master_check
+top_check
