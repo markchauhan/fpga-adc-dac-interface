@@ -71,10 +71,10 @@ always @(posedge clk) begin
               sclk    <= ~sclk; //toggle sclk
 
               if (sclk == 1'b0) begin
-                //rising edge, sample MISO
+                // rising edge — sample MISO
                 rx_data <= {rx_data[N_BITS-2:0], miso};
               end else begin
-                //falling edge, shift out next bit
+                // falling edge — shift out next bit on MOSI
                 shift_reg <= {shift_reg[N_BITS-2:0], 1'b0};
                 if (bit_cnt == 0)
                     state <= DONE;
