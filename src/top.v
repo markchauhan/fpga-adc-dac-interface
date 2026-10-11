@@ -23,9 +23,9 @@ module top (
 
     // wires between adc_controller and spi_master
     wire adc_spi_start;
-    wire [15:0] adc_spi_tx;
+    wire [23:0] adc_spi_tx;
     wire adc_spi_done;
-    wire [15:0] adc_spi_rx;
+    wire [23:0] adc_spi_rx;
 
     //wires between dac_controller and spi_master
     wire dac_spi_start;
@@ -37,7 +37,7 @@ module top (
     wire adc_done; 
 
     // ADC SPI master instance
-    spi_master adc_spi (
+    spi_master #(.N_BITS(24)) adc_spi (
         .clk(clk),
         .rst(rst),
         .start(adc_spi_start),

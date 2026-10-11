@@ -1,6 +1,6 @@
 // adc_controller.v
 // Drives spi_master to read one sample from a MCP3204 12-bit ADC
-// Builds the 16-bit SPI command and extracts the 12-bit
+// Builds the 24-bit SPI command and extracts the 12-bit
 
 module adc_controller (
     input wire   clk, 
@@ -10,9 +10,9 @@ module adc_controller (
 
     //spi_master communication
     output reg    spi_start, 
-    output reg [15:0] spi_tx, 
+    output reg [23:0] spi_tx,
     input wire    spi_done, 
-    input wire [15:0] spi_rx, 
+    input wire [23:0] spi_rx,
 
     // results
     output reg [11:0] adc_data,
@@ -29,7 +29,7 @@ always @(posedge clk) begin
   if (rst) begin
     state    <= IDLE; 
     spi_start <= 1'b0; 
-    spi_tx    <= 16'd0;
+    spi_tx    <= 24'd0;
     adc_data  <= 12'd0;
     done      <= 1'b0;
   end else begin 
@@ -42,7 +42,7 @@ always @(posedge clk) begin
         IDLE: begin 
             if (start) begin
               // build MC3204 command: start bit + single-ended + channel
-              spi_tx <= {5'b00001, 1'b1, channel, 8'b0};
+              spi_tx <= {5'b00000, 1'b1, 1'b1, 1'b0, channel, 14'b0};
               spi_start <= 1'b1; 
               state <= WAIT;
             end
